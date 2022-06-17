@@ -18,6 +18,7 @@ async function run(){
     console.log('db connected'); 
     const userCollection = client.db('hostel_admin').collection('users');
     const studentCollection = client.db('hostel_admin').collection('students');
+    const complaintCollection = client.db('hostel_admin').collection('complaints');
 
     // Students
     app.post('/student',async(req, res)=>{
@@ -26,15 +27,30 @@ async function run(){
       const result = await studentCollection.insertOne(student);
       res.send({result, success: true});
     })
+
     app.get('/student', async(req, res)=>{
       const student = await studentCollection.find().toArray();
       res.send(student); 
     })
+
     app.delete('/student/:id', async(req, res)=>{
       const id = req.params.id;
       const query = {_id:ObjectId(id)}; 
       const result = await studentCollection.deleteOne(query);
       res.send(result);
+    })
+
+    // complaint
+    app.post('/complaint',async(req, res)=>{
+      const student = req.body;
+      console.log(student);
+      const result = await complaintCollection.insertOne(student);
+      res.send({result, success: true});
+    })
+
+    app.get('/complaint', async(req, res)=>{
+      const student = await complaintCollection.find().toArray();
+      res.send(student); 
     })
 
     //user 
