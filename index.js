@@ -20,6 +20,14 @@ async function run(){
     const studentCollection = client.db('hostel_admin').collection('students');
     const complaintCollection = client.db('hostel_admin').collection('complaints');
 
+    // admin
+    app.get('/admin/:email', async(req, res) =>{
+      const email = req.params.email;
+      const user = await userCollection.findOne({email: email});
+      const isAdmin = user.role === 'admin';
+      res.send({admin: isAdmin})
+    })
+
     // Students
     app.post('/student',async(req, res)=>{
       const student = req.body;
@@ -55,7 +63,7 @@ async function run(){
 
     //user 
 
-    app.put('/user',async(req, res)=>{
+    app.put('/user/:email',async(req, res)=>{
       const email = req.params.email;
       console.log(email);
       const user = req.body;
